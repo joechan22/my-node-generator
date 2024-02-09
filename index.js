@@ -1,15 +1,14 @@
-import prompts, { PromptObject } from "prompts";
-import fs from 'fs'
-import path from "path";
-import shell from 'shelljs';
-import minimist from "minimist";
+#!/usr/bin/env node
+import prompts from "prompts";
+import createTemplate from './createTemplate.js'
+// import minimist from "minimist";
 
-const argv = minimist(process.argv.slice(2), { string: ["_"] });
+// const argv = minimist(process.argv.slice(2), { string: ["_"] });
 
-const promptMsg: PromptObject[] = [
+const promptMsg = [
     {
         type: 'text',
-        name: 'name',
+        name: 'projectName',
         message: 'Project name:',
         validate: name => isValidProjectName(name.trim()) || 'Project name is required (2-20 length)'
     },
@@ -39,3 +38,15 @@ const promptMsg: PromptObject[] = [
 function isValidProjectName(projectName) {
     return /^[^\s]{2,20}$/.test(projectName);
 }
+
+prompts(promptMsg)
+    .then((answers) => {
+        const projectName = answers.projectName
+        const templateName = answers.templateName
+
+        console.log(templateName, projectName)
+
+        createTemplate(templateName, projectName)
+    }
+    )
+    .catch(error => console.error(error.message))

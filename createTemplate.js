@@ -60,7 +60,7 @@ const createTemplate = (
     const _path = path.join(process.cwd(), projectPath)
     const _temp_dir = path.resolve(process.cwd(), templatePath)
 
-    execSync(`git clone --depth=1 ${repoURL} ${_path}`)
+    execSync(`git -q clone --depth=1 ${repoURL} ${_path}`)
 
     const templateLocation = path.join(_path, 'templates', templatePath)
     mkdir(_temp_dir);

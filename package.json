@@ -29,6 +29,7 @@
     "@types/node": "^20.11.17"
   },
   "dependencies": {
+    "@topcli/spinner": "^2.1.2",
     "command-exists": "^1.2.9",
     "prompts": "^2.4.2",
     "shelljs": "^0.8.5",

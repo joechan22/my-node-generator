@@ -60,8 +60,6 @@ prompts(promptMsg)
         const authorName = answers.authorName
         const description = answers.description || defaultDesc
 
-        console.log(authorName, description)
-
         createTemplate(templateName, projectName)
     }
     )

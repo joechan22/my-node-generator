@@ -6,6 +6,8 @@ import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+import { Spinner } from "@topcli/spinner";
+
 const _filename = fileURLToPath(import.meta.url);
 const _directory = dirname(_filename);
 
@@ -49,19 +51,26 @@ function copyFile(source, destination) {
 const createTemplate = (
     templatePath, projectPath
 ) => {
+    const spinner = new Spinner()
+      .start("Start working!");
+    
+    spinner.text = "Pre-checking...";
     preCheck();
+    spinner.succeed(`Pre-check success (${spinner.elapsedTime.toFixed(2)}ms) !`);
 
     let res = mkdir(projectPath);
     if (res == 1)
         process.exit(1)
 
-    console.log("create folder")
-
+    spinner.start("Cloning template from Github...")
     const _path = path.join(process.cwd(), projectPath)
     const _temp_dir = path.resolve(process.cwd(), templatePath)
 
-    execSync(`git -q clone --depth=1 ${repoURL} ${_path}`)
+    execSync(`git clone --depth=1 ${repoURL} ${_path}`)
 
+    spinner.succeed(`template clone completed (${spinner.elapsedTime.toFixed(2)}ms) !`);
+
+    spinner.start("Cleaning up...")
     const templateLocation = path.join(_path, 'templates', templatePath)
     mkdir(_temp_dir);
     copyFile(templateLocation, _temp_dir)
@@ -69,7 +78,7 @@ const createTemplate = (
     fs.rmSync(_path, { recursive: true })
 
     fs.rename(_temp_dir, _path,
-        () => { console.log("template build success"); })
+        () => { spinner.succeed(`Finished (${spinner.elapsedTime.toFixed(2)}ms) !`); })
 
 }
 

@@ -60,7 +60,7 @@ prompts(promptMsg)
         const authorName = answers.authorName
         const description = answers.description || defaultDesc
 
-        createTemplate(templateName, projectName)
+        createTemplate(templateName, projectName, authorName, description)
     }
     )
     .catch(error => console.error(error.message))

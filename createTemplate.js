@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from "path";
 import commandExists from 'command-exists';
 import { execSync } from 'child_process';
+import shell from 'shelljs'
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -49,7 +50,7 @@ function copyFile(source, destination) {
 
 
 const createTemplate = (
-    templatePath, projectPath
+    templatePath, projectPath, author, description
 ) => {
     const spinner = new Spinner()
       .start("Start working!");
@@ -79,6 +80,11 @@ const createTemplate = (
 
     fs.rename(_temp_dir, _path,
         () => { spinner.succeed(`Finished (${spinner.elapsedTime.toFixed(2)}ms) !`); })
+    
+    shell.sed('-i', '"name": ".*"', `"name": "${projectPath}"`, path.join(_path, 'package.json'))
+    shell.sed('-i', '"author": ".*"', `"author": "${author}"`, path.join(_path, 'package.json'))
+    shell.sed('-i', '"description": ".*"', `"description": "${description}"`, path.join(_path, 'package.json'))
+    shell.sed('-i', `^# ${templatePath}`, `# ${projectPath}`, path.join(_path, 'README.md'))
 
 }
 

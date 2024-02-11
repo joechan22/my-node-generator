@@ -1,6 +1,6 @@
 {
   "name": "my-node-generator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "the generator mainly for node express API",
   "main": "index.js",
   "type": "module",
